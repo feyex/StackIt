@@ -1,0 +1,20 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+dist
+build
+
+# TypeScript v1 declaration files
+typings/
+
+node_modules/
+
+# dotenv environment variables file
+
+.env.test
+
+.env
+
+.DS_Store
