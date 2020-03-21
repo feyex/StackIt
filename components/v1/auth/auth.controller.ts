@@ -153,11 +153,10 @@ const uploadoc = async (req: any, res: Response, ) => {
   try {
 
     const data = req.body;
-    console.log(data, 'ff1')
+
     cloudinaryConfig();
 
     const file = fileToDataUri(req.files).content;
-    console.log(file, 'ff2')
 
     const uploadResult = await uploader.upload(file, { folder: "softcomm" });
 
@@ -170,7 +169,7 @@ const uploadoc = async (req: any, res: Response, ) => {
       title: data.title,
 
     }, { new: true });
-    console.log(document, 'ff4')
+
     if (document) {
       return res.status(201).json({
         status: true,
@@ -196,8 +195,8 @@ const uploadoc = async (req: any, res: Response, ) => {
 }
 
 const search = (req: Request, res: Response) => {
-  let query = req.params.user
-  User.find({ "user": { '$regex': query, '$options': 'i' } })
+  let query = req.params.fullname
+  User.find({ "fullname": { '$regex': query, '$options': 'i' } })
     .then(user => res.status(200)
       .json({
         status: true,

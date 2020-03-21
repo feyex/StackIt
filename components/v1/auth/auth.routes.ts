@@ -44,8 +44,8 @@ router.route('/users/:_id')
 router.route('/users/:id') 
     .put(validateToken.verifyToken,updateProfile);
 
-router.route('user/search/:user') 
-    .get(validateToken.verifyToken,search);
+router.route('/user/search/:fullname') 
+    .get(search);
 
 
 export { router as authRouter };

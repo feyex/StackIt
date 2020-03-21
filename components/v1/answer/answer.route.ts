@@ -16,8 +16,8 @@ router.route('/:id')
 router.route('/:id') 
     .get(validateToken.verifyToken,getAnswer);
 
-router.route('/:user_id') 
-    .get(validateToken.verifyToken,getUserAnswer);
+router.route('/user/:id') 
+    .post(validateToken.verifyToken,getUserAnswer);
 
 router.route('/:id') 
     .delete(validateToken.verifyToken,deleteAnswer);
