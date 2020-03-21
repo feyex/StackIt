@@ -1,6 +1,7 @@
 ##StackIt
-A project to post questions and comment or give answers.
-Ranking of questions and answers
+
+#A project to post questions and comment or give answers.
+#Ranking of questions and answers
 ---
 
 ## Clone the repo
