@@ -28,13 +28,16 @@ validateToken.verifyToken = (req, res, next) => {
                 next();
             } else {
                 console.log(err, result)
-                res.sendStatus(403);
+                return res.status(403)
+                    .json({
+                        message: "Token expired or does not exist. Please login"
+                    })
             }
         });
     } else {
         return res.status(403)
             .json({
-                message: "Token expired or not exist"
+                message: "Token expired or does not exist. Please login"
             })
     }
 };

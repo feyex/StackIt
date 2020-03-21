@@ -116,21 +116,6 @@ const getAnswer = (req: Request, res: Response) => {
 			}))
 }
 
-const updateAnswer = (req: Request, res: Response) => {
-	Answer.findByIdAndUpdate(req.params.id, req.body, { new: true })
-		.then(Answer => res.status(200)
-			.json({
-				status: true,
-				message: Answer,
-				SuccessMsg: 'updated '
-			}))
-		.catch(err =>res.status(500)
-				.json({
-				status: false,
-				error: err,
-				message: 'Something went wrong. Failed to update Answers'
-			}))
-}
 
 const deleteAnswer = (req: Request, res: Response) => {
 	const id = req.params.id;
@@ -154,24 +139,29 @@ const deleteAnswer = (req: Request, res: Response) => {
 }
 
 const getUserAnswer = (req: Request, res: Response) => {
-	Answer.find({ "user_id": req.params.user_id })
-		.then(Answer => res.status(200)
-			.json({
-				status: true,
-				message: Answer,
-				SuccessMsg: ' Answers fetched for user '
-			}))
+	
+	Answer.find({ answers: { $elemMatch: { user_id: req.params.user_id } } } )
+		.then(answer=>{
+				
+				res.status(200)
+						.json({
+							status: true,
+							message: answer,
+							SuccessMsg: ' Answers fetched for user '
+						})
+		})
 		.catch(err =>res.status(500)
 				.json({
 				status: false,
 				error: err,
-				message: 'Something went wrong. Failed to fetch user Answers'
+				message: 'Something went wrong.'
 			}))
+	
 }
 
 const UpVote = (req: Request, res:Response) => {
-	const {id} = req.params
-	Answer.findOneAndUpdate(id,{$inc:{vote:1}},{new:true})
+	
+	Answer.findOneAndUpdate({"answers._id": req.params._id } ,{$inc:{"answers.$.vote":1}},{new:true})
 	.then(Answer => res.status(200)
 			.json({
 				status: true,
@@ -182,13 +172,13 @@ const UpVote = (req: Request, res:Response) => {
 				.json({
 					status: false,
 					error: err,
-					message: 'Something went wrong. Failed to upvote Answer'
+					message: 'Something went wrong. Failed to Downvote Answer'
 			}))
 }
 
 const DownVote = (req: Request, res:Response) => {
-	const {id} = req.params
-	Answer.findByIdAndUpdate(id,{$inc:{vote:-1}},{new:true})
+	
+	Answer.findOneAndUpdate({"answers._id": req.params._id } ,{$inc:{"answers.$.vote":-1}},{new:true})
 	.then(Answer => res.status(200)
 			.json({
 				status: true,
@@ -205,7 +195,7 @@ const DownVote = (req: Request, res:Response) => {
 
 const search = (req: Request, res:Response) => {
 	let ans = req.params.answer
-	Answer.find({ "answer": {'$regex':ans,'$options': 'i'}})
+	Answer.find({ "answers.answer": {'$regex':ans,'$options': 'i'}})
 		.then(Answer => res.status(200)
 			.json({
 				status: true,
@@ -221,5 +211,5 @@ const search = (req: Request, res:Response) => {
 }
 
 
-export { createAnswer, listAnswer, getAnswer, updateAnswer, deleteAnswer, getUserAnswer, UpVote,DownVote, search };
+export { createAnswer, listAnswer, getAnswer, deleteAnswer, getUserAnswer, UpVote,DownVote, search };
 

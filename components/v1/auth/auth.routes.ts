@@ -1,6 +1,6 @@
 
 import { Router, Request, Response, NextFunction } from 'express';
-import { createAccount,signin,checkmailexist, updateProfile,getUserId,search} from './auth.controller';
+import { createAccount,signin, updateProfile,getUserId,search} from './auth.controller';
 import { upload, validateToken } from '../helpers';
 
 const router = Router();
@@ -34,9 +34,6 @@ router.route('/signup')
 
 router.route("/login")
     .post(signin);
-
-router.route("/email/:email")
-       .get (checkmailexist);
 
 router.route('/users/:_id')
     .get(validateToken.verifyToken,getUserId);
