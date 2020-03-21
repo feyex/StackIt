@@ -1,6 +1,6 @@
 
 import { Router, Request, Response, NextFunction } from 'express';
-import { createAccount,signin,checkmailexist, uploadoc,getUserId,search} from './auth.controller';
+import { createAccount,signin,checkmailexist, updateProfile,getUserId,search} from './auth.controller';
 import { upload, validateToken } from '../helpers';
 
 const router = Router();
@@ -39,13 +39,13 @@ router.route("/email/:email")
        .get (checkmailexist);
 
 router.route('/users/:_id')
-    .get(getUserId);
+    .get(validateToken.verifyToken,getUserId);
 
 router.route('/users/:id') 
-    .post(upload.single('profilePic'),uploadoc);
+    .put(validateToken.verifyToken,updateProfile);
 
 router.route('user/search/:user') 
-    .get(search);
+    .get(validateToken.verifyToken,search);
 
 
 export { router as authRouter };

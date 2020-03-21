@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { upload, validateToken } from '../helpers';
 import {
     createQuestion, listQuestion, getQuestion, updateQuestion, deleteQuestion, getUserQuestion, UpVote, DownVote, search
 } from './question.controller'
@@ -6,30 +7,30 @@ import {
 const router = Router();
 
 router.route('/')
-    .post(createQuestion);
+    .post(validateToken.verifyToken,createQuestion);
 
 router.route('/all/:user_id')
-    .get(getUserQuestion);
+    .get(validateToken.verifyToken,getUserQuestion);
 
 router.route('/:id')
-    .get(getQuestion);
+    .get(validateToken.verifyToken,getQuestion);
 
 router.route('/all')
-    .get(listQuestion);
+    .get(validateToken.verifyToken,listQuestion);
 
 router.route('/all/:id')
     .delete(deleteQuestion);
 
 router.route('/:id')
-    .put(updateQuestion);
+    .put(validateToken.verifyToken,updateQuestion);
 
 router.route('/vote/:id')
-    .put(UpVote);
+    .put(validateToken.verifyToken,UpVote);
 
 router.route('/downvote/:id')
-    .put(DownVote);
+    .put(validateToken.verifyToken,DownVote);
 
 router.route('/search/:question') 
-    .get(search);
+    .get(validateToken.verifyToken,search);
 
 export { router as QuestionRouter }

@@ -8,25 +8,80 @@ const Answer = model('Answer');
 
 //create answer modelled to a particular Answer
 const createAnswer = (req: Request, res: Response) => {
-	var answer = new Answer(
-		req.body
 
-	);
+	let questionId = req.body.question_id;
+	//Find if question has ever been answered
+	Answer.findOne({question_id:questionId})
+		.then((result:any)=>{
+			if(result){
+				//if question
+				result.answers.push({
+					user_id: req.body.user_id,
+					answer:req.body.answer
+			
+				});
 
-	answer.save() 
-		.then(Answer => res.status(200)
-		.json({
-			status: true,
-			message: Answer,
-			SuccessMsg: 'All Answers saved '
-		}))
-		.catch(err =>res.status(500)
-			.json({
-			status: false,
-			error: err,
-			message: 'Something went wrong. Failed to save Answer'
-		}))
+				//save answer
+				result.save()
+				.then((answer:any) => res.status(200)
+					.json({
+						status: true,
+						message: answer,
+						SuccessMsg: 'All Answers saved '
+					}))
+					.catch((err: any) =>res.status(500)
+						.json({
+						status: false,
+						error: err,
+						message: 'Something went wrong. Failed to save Answer'
+					}))
+			
+			}
+			else{
 
+				//Save answer to model
+			
+				Answer.create({question_id:questionId})
+					.then((results:any)=>{
+						if (results){
+							results.answers.push({
+								user_id: req.body.user_id,
+								answer:req.body.answer,
+								
+							});
+						
+							results.save() 
+								.then((answer:any) => res.status(200)
+								.json({
+									status: true,
+									message: answer,
+									SuccessMsg: 'All Answers saved '
+								}))
+								.catch((err: any) =>res.status(500)
+									.json({
+									status: false,
+									error: err,
+									message: 'Something went wrong. Failed to save Answer'
+								}))
+						}
+						else{
+							return res.status(500)
+										.json({
+											status:false,
+											message: 'Something went wrong. Failed to create Answer'
+										})
+						}
+					})
+					.catch((err: any) =>res.status(500)
+							.json({
+							status: false,
+							error: err
+
+						}))
+	
+			}
+		})
+	
 }
 
 const listAnswer = (req: Request, res: Response) => {
@@ -116,7 +171,7 @@ const getUserAnswer = (req: Request, res: Response) => {
 
 const UpVote = (req: Request, res:Response) => {
 	const {id} = req.params
-	Answer.findByIdAndUpdate(id,{$inc:{vote:1}},{new:true})
+	Answer.findOneAndUpdate(id,{$inc:{vote:1}},{new:true})
 	.then(Answer => res.status(200)
 			.json({
 				status: true,

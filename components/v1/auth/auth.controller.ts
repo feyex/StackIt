@@ -215,5 +215,5 @@ const search = (req: Request, res: Response) => {
 
 
 export {
-  createAccount, signin, checkmailexist, uploadoc, getUserId, search
+  createAccount, signin, checkmailexist, updateProfile, getUserId, search
 }
