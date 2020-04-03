@@ -1,7 +1,12 @@
+## StackIt
+
+A project to post questions and comment or give answers.
+
+Ranking of questions and answers
 
 ---
 
-## Clone the repo
+### Clone the repo
 1. Run npm i 
 2. Rename .env.example to .env
 4. Run project with npm run serve
