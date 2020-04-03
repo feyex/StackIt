@@ -195,8 +195,8 @@ const uploadoc = async (req: any, res: Response, ) => {
 }
 
 const search = (req: Request, res: Response) => {
-  let query = req.params.fullname
-  User.find({ "fullname": { '$regex': query, '$options': 'i' } })
+  let query = req.params.displayname
+  User.find({ "displayname": { '$regex': query, '$options': 'i' } })
     .then(user => res.status(200)
       .json({
         status: true,
